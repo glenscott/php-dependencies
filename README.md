@@ -13,6 +13,10 @@ For stage 1, you must determine the functions that are defined in your PHP envir
 
 ## Example Run
 
+Create a configuration file
+
+	$ cp config_sample.php config.php
+
 Getting details of your PHP environment
 
 	$ php get-env-functions.php 
@@ -23,6 +27,7 @@ Scanning source code for dependencies
 	$ php scan-dependencies.php 
 	Found 3 function calls and 1 object instantiations in your script.
 	Function ps_setgray not defined.
+	Extensions required: standard 
 
 In this example, the function `ps_setgray` was called in a script but not defined anywhere.
 
