@@ -9,7 +9,7 @@
  * @author Glen Scott <glen@glenscott.co.uk>
  */
 class CodeDependency {
-    const php_file_match = '/^.+\.php$/i';
+    const php_file_match = '/^.+\.php|.+\.inc$/i';
 
     /**
      * record ALL function calls found

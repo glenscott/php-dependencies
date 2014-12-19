@@ -2,14 +2,18 @@
 
 ini_set( 'memory_limit', '512M' );
 
-define( 'CONFIG_PATH', '/tmp/php-functions.inc' );
-define( 'SOURCE_PATH', 'example/' );
-
+require_once 'config.php';
 require_once 'CodeDependency.php';
 
-// read config file
-$all_functions = unserialize( file_get_contents( CONFIG_PATH ) );
+if (is_file(FUNCTION_CACHE_PATH)) {
+  $all_functions = unserialize( file_get_contents( FUNCTION_CACHE_PATH ) );
+  $function_extensions = unserialize( file_get_contents( EXTENSION_CACHE_PATH ) );
+} else {
+  print 'Run get-env-functions.php first'.PHP_EOL;
+  exit;
+}
 
+$extensions = array();
 $cd = new CodeDependency();
 $cd->findDependenciesByDirectory( $all_functions, SOURCE_PATH );
 
@@ -20,4 +24,15 @@ foreach( $cd->getFoundFunctions() as $func ) {
          ! in_array( $func, $cd->getDefinedCustomFuncs() ) ) {
         echo "Function $func not defined.\n";
     }
+    if (isset($function_extensions[$func])) {
+      $extensions[$func] = $function_extensions[$func];
+    }
 }
+$required_extensions = array_unique(array_values($extensions));
+print "Extensions required: ";
+foreach ($required_extensions as $ext) {
+  print $ext. ' ';
+}
+print PHP_EOL;
+
+
